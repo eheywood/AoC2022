@@ -4,6 +4,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Tree top searcher class to help the elves find a perfect treetop hideout!
+ */
 public class TreeTopSearcher {
 
     private String fileName = "input.txt";
@@ -15,6 +18,9 @@ public class TreeTopSearcher {
 
     private int[][] scenicScoreForest;
 
+    /**
+     * Constructs the tree top searcher class by initialising the file reader, buffered reader and the arrays and arraylists that are needed for the class.
+     */
     public TreeTopSearcher(){
         try {
             File caloriesFile = new File(fileName);
@@ -28,6 +34,9 @@ public class TreeTopSearcher {
          readInput();
     }
 
+    /**
+     * Reads the input from the input file into an arraylist
+     */
     private void readInput(){
         try {
             String line;
@@ -41,6 +50,11 @@ public class TreeTopSearcher {
         }
     }
 
+    /**
+     * Calculates if a given tree is visible or not from the outside and updates the visibleForest array.
+     * @param x the x coordinate of the tree in question
+     * @param y the y coordinate of the tree in question
+     */
     private void visible(int x, int y){
         if(x == 0 || x == (forest.get(0).size()-1)|| y == 0 || y == (forest.size())-1){
             visibleForest[x][y] = true;
@@ -49,6 +63,12 @@ public class TreeTopSearcher {
         }
     }
 
+    /**
+     * Calculates if the tree is visible from the left of the grid and returns true if so
+     * @param x the x coordinate of the tree in question
+     * @param y the y coordinate of the tree in question
+     * @return true if the tree is visible from the left, false if not
+     */
     private Boolean visibleFromLeft(int x, int y){
         int value = Integer.parseInt(forest.get(y).get(x));
         for(int i = 0; i < x; i++){
@@ -59,6 +79,12 @@ public class TreeTopSearcher {
         return true;
     }
 
+    /**
+     * Calculates if the tree is visible from the right of the grid and returns true if so
+     * @param x the x coordinate of the tree in question
+     * @param y the y coordinate of the tree in question
+     * @return true if the tree is visible from the right, false if not
+     */
     private Boolean visibleFromRight(int x, int y){
         int value = Integer.valueOf(forest.get(y).get(x));
         for(int i = forest.get(0).size() -1; i > x; i--){
@@ -69,6 +95,12 @@ public class TreeTopSearcher {
         return true;
     }
 
+    /**
+     * Calculates if the tree is visible from the top of the grid and returns true if so
+     * @param x the x coordinate of the tree in question
+     * @param y the y coordinate of the tree in question
+     * @return true if the tree is visible from the top, false if not
+     */
     private boolean visibleFromUp(int x, int y){
         int value = Integer.valueOf(forest.get(y).get(x));
         for(int i = 0; i < y; i++){
@@ -79,6 +111,12 @@ public class TreeTopSearcher {
         return true;
     }
 
+    /**
+     * Calculates if the tree is visible from the bottom of the grid and returns true if so
+     * @param x the x coordinate of the tree in question
+     * @param y the y coordinate of the tree in question
+     * @return true if the tree is visible from the bottom, false if not
+     */
     private Boolean visibleFromDown(int x, int y) {
         int value = Integer.valueOf(forest.get(y).get(x));
         for (int i = forest.size() - 1; i > y; i--) {
@@ -90,6 +128,10 @@ public class TreeTopSearcher {
 
     }
 
+    /**
+     * Calculates the number of trees that are visible from the outside of the grid
+     * @return the number of trees
+     */
     public int findVisibleTrees(){
         int count = 0;
         visibleForest = new boolean[forest.size()][forest.size()];
@@ -110,11 +152,22 @@ public class TreeTopSearcher {
         return count;
     }
 
+    /**
+     * Calculates the scenic score of a single tree
+     * @param x the x coordinate of the tree
+     * @param y the y coordinate of the tree
+     */
     private void scenicScoreForOneTree(int x, int y){
         scenicScoreForest[x][y] = scoreDown(x,y) * scoreUp(x,y) * scoreLeft(x,y) * scoreRight(x,y);
         System.out.println(scoreDown(x,y) + "," + (scoreUp(x,y) + "," + scoreLeft(x,y) + "," + scoreRight(x,y)));
     }
 
+    /**
+     * Calculates the score of the tree for the left, for a given tree
+     * @param x the x coordinate of the tree
+     * @param y the y coordinate of the tree
+     * @return the scenic score of the given tree
+     */
     private int scoreLeft(int x, int y){
         int height = Integer.parseInt(forest.get(y).get(x));
         int score = 0;
@@ -131,6 +184,12 @@ public class TreeTopSearcher {
         return score;
     }
 
+    /**
+     * Calculates the score of the tree for the right, for a given tree
+     * @param x the x coordinate of the tree
+     * @param y the y coordinate of the tree
+     * @return the scenic score of the given tree
+     */
     private int scoreRight(int x, int y){
         int height = Integer.valueOf(forest.get(y).get(x));
         int score = 0;
@@ -145,6 +204,12 @@ public class TreeTopSearcher {
         return score;
     }
 
+    /**
+     * Calculates the score of the tree for above, for a given tree
+     * @param x the x coordinate of the tree
+     * @param y the y coordinate of the tree
+     * @return the scenic score of the given tree
+     */
     private int scoreUp(int x, int y){
         int height = Integer.valueOf(forest.get(y).get(x));
         int score = 0;
@@ -159,6 +224,12 @@ public class TreeTopSearcher {
         return score;
     }
 
+    /**
+     * Calculates the score of the tree for the bottom, for a given tree
+     * @param x the x coordinate of the tree
+     * @param y the y coordinate of the tree
+     * @return the scenic score of the given tree
+     */
     private int scoreDown(int x, int y) {
         int height = Integer.valueOf(forest.get(y).get(x));
         int score = 0;
@@ -174,6 +245,10 @@ public class TreeTopSearcher {
 
     }
 
+    /**
+     * Finds the highest scoring tree from the scenicScoreForest
+     * @return the highest storing tree
+     */
     private int findMaxScore(){
         int max = 0;
         for(int x = 0; x < scenicScoreForest.length; x++){
@@ -186,6 +261,10 @@ public class TreeTopSearcher {
         return max;
     }
 
+    /**
+     * Calculates the highest scenic scoring tree from the forest
+     * @return the score of the highest scoring tree
+     */
     public int findMaximumScenicSore(){
         scenicScoreForest = new int[forest.size()][forest.size()];
 
