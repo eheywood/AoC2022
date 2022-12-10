@@ -63,22 +63,16 @@ public class CPU {
      */
     private void oneCycle(String instruction, int cycleNo){
         String[] instr = instruction.split(" ");
+        pc += 1;
+        printPixel();
         if(instr[0].equals("addx")){
             if(cycleNo == 1){
                 X += Integer.valueOf(instr[1]);
-                pc += 1;
-                printPixel();
                 //updateSignalStrength();
             } else {
-                pc += 1;
                 //updateSignalStrength();
-                printPixel();
                 oneCycle(instruction,1);
             }
-        }else{
-            pc += 1;
-            printPixel();
-            //updateSignalStrength();
         }
     }
 
@@ -96,12 +90,12 @@ public class CPU {
      * Prints a singular pixel to the screen
      */
     private void printPixel(){
-        if(((pc % 40)) == X || ((pc % 40)) == (X + 1) || ((pc % 40)) == (X -1)){
+        if(((pc % 40)-1) == X || ((pc % 40)-1) == (X + 1) || ((pc % 40)-1) == (X -1)){
             System.out.print("#");
         }else{
             System.out.print(".");
         }
-        if(pc % 40 == 0){
+        if((pc % 40) == 0){
             System.out.print("\n");
         }
     }
